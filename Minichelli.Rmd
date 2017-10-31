@@ -1,0 +1,52 @@
+---
+title: "Candy Production"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(stringr)
+
+candy<-read.csv("candy_production.csv")
+df<-candy
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+g<-ggplot()+
+  geom_line(data=candy,aes(x=observation_date,y=IPG3113N))
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+months_df<-df%>%
+  filter(Date>="01/01/1990", "12/31/1990")%>%
+  group_by(Date)%>%
+  summarize(IPG3113N=n())
+ 
+ggplot()+
+  geom_line(data=months_df,aes(x=Date,y=IPG3113N=n())+
+  scale_x_date(date_breaks='1 month',date_labels='%b')
+```
+
+### Chart C
+
+```{r}
+g<-ggplot()+
+  geom_bar(data=df,aes(x=observation date,y=average),stat="identity")
+```
+
